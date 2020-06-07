@@ -1,0 +1,113 @@
+import React, {useState} from 'react';
+import { View, StatusBar, StyleSheet, Button, TouchableOpacity, Text, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Modal from 'react-native-modal';
+import Notification from './Notification';
+
+export default function  VitalsScreen({navigation}) {
+  const [vitals, setVitals] = useState(false);
+  const[notifStatus, setNotifStatus] = useState(false);
+
+  const toggleModal = () => {
+    setNotifStatus(!notifStatus)
+  };
+
+  const Switch = () => {
+      if(vitals === false){
+        return(
+          <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50 }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text>You have not logged your vitals yet..</Text>
+              <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('logVitals')}}>
+                <Text>Log Vitals</Text>
+              </TouchableOpacity> 
+              <TouchableOpacity style={styles.button} onPress={() => setVitals(!vitals) }>
+                <Text>Switch</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )
+      }else if(vitals === true){
+        return(
+            <TouchableOpacity style={styles.button} onPress={() => setVitals(!vitals) }>
+              <Text>Switch</Text>
+            </TouchableOpacity>
+          )
+      }};
+
+  return (
+  <View style={styles.root}>
+    <StatusBar/>
+      <Modal 
+          isVisible={notifStatus}
+          onSwipeComplete={() => setNotifStatus(false)}
+          hasBackdrop={true}
+          backdropColor='black'
+          swipeDirection="down"
+          backdropOpacity={0.7}>
+            <View style={styles.modalView}>
+              <Notification/>
+            </View>
+      </Modal>
+      <View style={styles.header}>
+          <View style={{flexDirection: 'column', flex:1 }}>
+            <TouchableOpacity style={styles.logo} onPress={() => navigation.navigate('Profile')}>
+              <Image source={require('../assets/images/avatar.png')} style={styles.logo}/>
+            </TouchableOpacity>
+            <Text style={{paddingTop: 20,fontSize:24, fontWeight: 'bold'}}>Vitals</Text>
+            </View>
+            <TouchableOpacity onPress={() => toggleModal()}>
+              <Ionicons name='md-notifications-outline' size={40} />
+            </TouchableOpacity>
+        </View>
+        {Switch()}
+
+  </View>
+  )
+}
+
+ VitalsScreen.navigationOptions = {
+  header: null
+};
+
+const styles = StyleSheet.create({
+  root: {
+        justifyContent:"center",
+        paddingTop: StatusBar.currentHeight,
+  },
+   modalView: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    flex: 1
+  },
+  modalBackdrop: {
+    backgroundColor: '#000000aa',
+    flex: 1
+  },
+  header: {
+    paddingHorizontal: 15,
+    height: 100,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 0.5,
+    flexDirection: 'row'
+  },
+  logo: {
+    height: 40, 
+    width: 40, 
+    borderRadius: 40, 
+    borderColor: '#ccc', 
+    borderWidth:1,
+  },
+  button: {
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 1,
+      borderStyle: 'dashed',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 50,
+      width: 180,
+      marginTop: 10
+   }
+})
