@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Button, StatusBar, Image, TouchableOpacity} fro
 import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import Notification from './Notification';
+import { RadioButton, FAB } from 'react-native-paper';
 
 export default function  ReportScreen({navigation}) {
     const [report, setReport] = useState(false);
@@ -32,9 +33,17 @@ export default function  ReportScreen({navigation}) {
         )
       }else if(report === true){
         return(
+          <View style={{flex: 1}}>
             <TouchableOpacity style={styles.button} onPress={() => setReport(!report) }>
               <Text>Switch</Text>
             </TouchableOpacity>
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                color='white'
+                onPress={() => navigation.navigate('MakeReport') }
+            />
+            </View>
           )
       }};
 
@@ -107,5 +116,11 @@ export default function  ReportScreen({navigation}) {
   modalBackdrop: {
     backgroundColor: '#000000aa',
     flex: 1
+  },
+  fab: {
+    position: 'absolute',
+    left: 330,
+    top: 430,
+    backgroundColor: "black"
   }
   });

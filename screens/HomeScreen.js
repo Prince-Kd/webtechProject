@@ -75,11 +75,16 @@ export default function Home ({navigation}) {
                 top: 45}}>Recovered</Text>
             </View>
             <View style={styles.slides}>
-              <Text style={styles.text1}>21</Text>
-              <Text style={styles.text2}>Deaths</Text>
+              <Text style={{color:"black",  fontWeight: "bold",fontSize: 24, position: 'absolute', left: 252, top: 8}}>21</Text>
+              <Text style={{color:"black", position: 'absolute', left: 235, top: 38}}>Deaths</Text>
             </View>
           </View>
         </ScrollView>
+        <View style={{padding: 10}}>
+        <Text>
+         
+        </Text>
+        </View>
       </ScrollView>
     </View>
   )
@@ -104,6 +109,7 @@ const styles = StyleSheet.create({
     width: 290 , 
     borderRadius: 10, 
     borderColor: 'black',
+    borderWidth: 1
   },
   header: {
     paddingHorizontal: 15,

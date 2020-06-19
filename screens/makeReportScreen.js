@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text, TextInput, StatusBar, TouchableOpacity, Center } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TextInput, StatusBar, TouchableOpacity, Center } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import CheckBox from '@react-native-community/checkbox';
+import { RadioButton, FAB } from 'react-native-paper';
 
 export default function  MakeReportScreen() {
   const [value, setValue] = useState("");
@@ -9,25 +9,12 @@ export default function  MakeReportScreen() {
   const [location, setLocation] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
-  const [toggleCheckBox1, setToggleCheckBox1] = useState(false)
+  const [checked, setState] = useState();
   return (
   <View style={styles.root}>
+  <ScrollView>
   	<Text>Who are you reporting?</Text>
-    <View style={{alignItems:'center', flexDirection: 'row'}}>
-      <CheckBox
-        disabled={false}
-        value={toggleCheckBox}
-        onValueChange={() => toggleCheckBox ? setToggleCheckBox(false) : setToggleCheckBox(true)}
-      />
-      <Text style={{paddingRight: 20}}>Self</Text>
-      <CheckBox
-        disabled={false}
-        value={toggleCheckBox1}
-        onValueChange={() => toggleCheckBox1 ? setToggleCheckBox1(false) : setToggleCheckBox1(true)}
-      />
-      <Text>Other Individual</Text>
-      </View>
+    
       <Text style={{paddingTop: 10}}>Location or Digital Address</Text>
       <TextInput
         style = {styles.age}
@@ -37,7 +24,7 @@ export default function  MakeReportScreen() {
         
       />
       <View style={styles.check}>
-        <View>
+        <View style={{flex: 1}}>
           <Text>Nearest Landmark</Text>
           <TextInput
             style = {styles.loc}
@@ -47,7 +34,7 @@ export default function  MakeReportScreen() {
             
           />
         </View>
-        <View>
+        <View style={{flex: 1, paddingLeft: 10}}>
           <Text>Alternate Contact</Text>
           <TextInput
             style = {styles.loc}
@@ -61,7 +48,7 @@ export default function  MakeReportScreen() {
       </View>
       <Text>Description</Text>
       <TextInput
-        style = {{height: 150,borderColor: "#ccc",borderWidth: 1,borderRadius: 5, padding: 10}}
+        style = {{alignItems: "flex-start", height: 150,borderColor: "#ccc",borderWidth: 1,borderRadius: 5, padding: 10}}
         onChangeText={text => setDescription(text)}
         value = {description}
         placeholder = "Type Something"
@@ -72,7 +59,7 @@ export default function  MakeReportScreen() {
           <Text style={{color: "white"}}>Report Case</Text>
         </TouchableOpacity>
       </View>
-      
+    </ScrollView>
   </View>
   )
 }
@@ -89,7 +76,6 @@ const styles = StyleSheet.create({
   	},
     check: {
       flexDirection: 'row',
-      justifyContent:"space-between",
       paddingVertical: 20
     },
     age: {
@@ -103,7 +89,7 @@ const styles = StyleSheet.create({
       height: 40, 
       borderColor: "#ccc",
       borderWidth: 1,
-      width: 180,
+      flex: 1,
       borderRadius: 5,
       padding: 10
     },
