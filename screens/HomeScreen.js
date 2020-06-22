@@ -14,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import Notification from './Notification';
 
-export default function Home ({navigation}) {
+export default function Home ({navigation, route}) {
   const[notifStatus, setNotifStatus] = useState(false);
 
   const toggleModal = () => {
@@ -74,9 +74,10 @@ export default function Home ({navigation}) {
                 left: 220,
                 top: 45}}>Recovered</Text>
             </View>
-            <View style={styles.slides}>
-              <Text style={{color:"black",  fontWeight: "bold",fontSize: 24, position: 'absolute', left: 252, top: 8}}>21</Text>
-              <Text style={{color:"black", position: 'absolute', left: 235, top: 38}}>Deaths</Text>
+            <View>
+            <Image style={styles.slides} source={require('../assets/images/slide3.jpg')}/>
+              <Text style={{color:"white",  fontWeight: "bold",fontSize: 24, position: 'absolute', left: 252, top: 8}}>21</Text>
+              <Text style={{color:"white", position: 'absolute', left: 235, top: 38}}>Deaths</Text>
             </View>
           </View>
         </ScrollView>

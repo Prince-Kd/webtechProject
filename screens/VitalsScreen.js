@@ -1,16 +1,47 @@
 import React, {useState} from 'react';
-import { View, StatusBar, StyleSheet, Button, TouchableOpacity, Text, Image } from 'react-native';
+import { View, StatusBar, StyleSheet, Button, TouchableOpacity, Text, Image, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Modal from 'react-native-modal';
 import Notification from './Notification';
+import VITALS from './Vitals';
+import LogVitals from './logVitals';
+import { FAB } from 'react-native-paper';
 
 export default function  VitalsScreen({navigation}) {
   const [vitals, setVitals] = useState(false);
   const[notifStatus, setNotifStatus] = useState(false);
+  const [symptoms, setSymptoms] = useState([]);
+  const[modalVisible, setModalVisible] = useState(false)
 
   const toggleModal = () => {
     setNotifStatus(!notifStatus)
   };
+  const back = (state) => {
+    setModalVisible(state);
+  };
+
+  const getData = (item1, item2, item3, item4, item5, item6) => {
+    setSymptoms(symptoms => symptoms.concat(
+      {
+        Sym1: item1,
+        Sym2: item2,
+        Sym3: item3,
+        Sym4: item4,
+        Sym5: item5,
+        Sym6: item6
+      }
+
+    ))
+    setVitals(true);
+  }
+
+
+
+  const Symptoms = []
+  symptoms.forEach((symptom, i) => {
+    Symptoms.push(
+      <VITALS symp = {symptom}/>
+      )
+  })
 
   const Switch = () => {
       if(vitals === false){
@@ -18,20 +49,23 @@ export default function  VitalsScreen({navigation}) {
           <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50 }}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text>You have not logged your vitals yet..</Text>
-              <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('logVitals')}}>
+              <TouchableOpacity style={styles.button} onPress={() => setModalVisible(!modalVisible)}>
                 <Text>Log Vitals</Text>
               </TouchableOpacity> 
-              <TouchableOpacity style={styles.button} onPress={() => setVitals(!vitals) }>
-                <Text>Switch</Text>
-              </TouchableOpacity>
             </View>
           </View>
         )
       }else if(vitals === true){
         return(
-            <TouchableOpacity style={styles.button} onPress={() => setVitals(!vitals) }>
-              <Text>Switch</Text>
-            </TouchableOpacity>
+          <View style={{flex: 1, padding: 10}}>
+            {Symptoms}
+            <FAB
+            style={styles.fab}
+            icon="plus"
+            color='white'
+            onPress={() => setModalVisible(!modalVisible)}
+            />
+          </View>
           )
       }};
 
@@ -39,12 +73,10 @@ export default function  VitalsScreen({navigation}) {
   <View style={styles.root}>
     <StatusBar/>
       <Modal 
-          isVisible={notifStatus}
-          onSwipeComplete={() => setNotifStatus(false)}
-          hasBackdrop={true}
-          backdropColor='black'
-          swipeDirection="down"
-          backdropOpacity={0.7}>
+      visible={notifStatus}
+      animationType="slide"
+      onRequestClose={() => toggleModal()}
+      >
             <View style={styles.modalView}>
               <Notification/>
             </View>
@@ -61,6 +93,12 @@ export default function  VitalsScreen({navigation}) {
             </TouchableOpacity>
         </View>
         {Switch()}
+        <Modal 
+        animationType="slide"
+        onRequestClose={() => setModalVisible(!modalVisible)}
+        visible={modalVisible}>
+          <LogVitals close = {back} details = {getData}/>
+        </Modal> 
 
   </View>
   )
@@ -109,5 +147,11 @@ const styles = StyleSheet.create({
       height: 50,
       width: 180,
       marginTop: 10
-   }
+   },
+   fab: {
+    position: 'absolute',
+    left: 330,
+    top: 430,
+    backgroundColor: "black"
+  },
 })

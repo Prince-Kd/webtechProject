@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
-import { View, StatusBar, StyleSheet, Button, TouchableOpacity, Text, TextInput, Image, Modal } from 'react-native';
+import { View, StatusBar, StyleSheet, Button, TouchableOpacity, Text, TextInput, Image} from 'react-native';
 import Verification from './Verification';
-import {Mutation} from 'react-apollo';
-import LoginUser from '../Mutations';
+import {LoginUser} from '../Mutations';
+import { Mutation } from '@apollo/react-components';
 
 export default function Cover({navigation}) {
 	const[number, setNumber] = useState();
-	const[modalVisible, setModalVisible] = useState(false)
 	const[count, setState] = useState();
 	const[color, setColor] = useState("gray");
 	const[warning, setWarning] = useState("");
 
+
 	const getVerification = (code) => {
-		if(code == "09045")
-			setModalVisible(false); 
+		if(code == "09045"){
+			setModalVisible(false);
+		}
 	};
 
 	const back = (value) => {
@@ -27,7 +28,11 @@ export default function Cover({navigation}) {
 
 
 	return(
-		
+		<Mutation 
+		mutation={LoginUser} 
+		onCompleted={data => {
+          console.log("MUTATION_DATA", data);}}>
+			{(loginUser, {data}) => (		
 				<View style={styles.root}>
 					<Text style={{fontSize: 35, fontWeight: "bold"}} >COVERS</Text>
 					<Text>(COVID-19 EMERGENCY RESPONSE SOLUTION)</Text>
@@ -50,36 +55,31 @@ export default function Cover({navigation}) {
 					style={styles.input}
 					/>
 					<TouchableOpacity style={{
-			height: 50, 
-			width: 350, 
-			justifyContent: "center", 
-			alignItems: "center", 
-			backgroundColor: color
-		}}
+					height: 50, 
+					width: 350, 
+					justifyContent: "center", 
+					alignItems: "center", 
+					backgroundColor: color
+					}}
 						onPress={()=> {
 							if(number.length === 0){
 								setWarning("Enter Number First!!");
 							}else if(number.length > 0 && number.length < 10){
 								setWarning("Enter a valid Number!!");
 							}else{
-								setModalVisible(!modalVisible)
+								navigation.navigate('Verify', {contact: number})
 							}
+							loginUser({variables: {phone: number}})
 							
 						}}
 					>
 						<Text style={{color: "white"}}>Get Started</Text>
 					</TouchableOpacity>
 					<Text style={{color:"red", paddingTop: 10}}>{warning}</Text>
-					<Modal 
-			          visible={modalVisible}
-			        >
-			       		<Verification verify = {getVerification} close = {back} contact = {number}/>
-			      	</Modal>
-
 				</View>
-		
+				)}
+			</Mutation>
 	)
-
 }
 
 const styles = StyleSheet.create({

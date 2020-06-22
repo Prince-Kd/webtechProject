@@ -3,17 +3,42 @@ import { View, StyleSheet, ScrollView, Text, TextInput, StatusBar, TouchableOpac
 import { Ionicons } from '@expo/vector-icons';
 import { RadioButton, FAB } from 'react-native-paper';
 
-export default function  MakeReportScreen() {
+export default function  MakeReportScreen({navigation, close, Reports}) {
   const [value, setValue] = useState("");
-  const [landmark, setLandmarK] = useState("");
+  const [landmark, setLandmark] = useState("");
   const [location, setLocation] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
   const [checked, setState] = useState();
+  const[code, setCode] = useState();
+
+  const sendInfo = () => {
+    Reports(checked, description, contact);
+  }
+
+  
+
   return (
   <View style={styles.root}>
+    <TouchableOpacity onPress={() => close(false)} style={{height: 24, width: 24, marginBottom: 10}}>
+      <Ionicons name="md-close" size={24}/>
+    </TouchableOpacity>
   <ScrollView>
   	<Text>Who are you reporting?</Text>
+    <View style={{flexDirection:'row', alignItems: 'center'}}>
+          <RadioButton
+            value="self"
+            status={checked === 'self' ? 'checked' : 'unchecked'}
+            onPress={() => { setState('self'); }}
+          />
+          <Text>Self</Text>
+          <RadioButton
+            value="Individual"
+            status={checked === 'Individual' ? 'checked' : 'unchecked'}
+            onPress={() => { setState('Individual') }}
+          />
+          <Text>Individual</Text>
+      </View>
     
       <Text style={{paddingTop: 10}}>Location or Digital Address</Text>
       <TextInput
@@ -28,7 +53,7 @@ export default function  MakeReportScreen() {
           <Text>Nearest Landmark</Text>
           <TextInput
             style = {styles.loc}
-            onChangeText={text => setLandmarK(text)}
+            onChangeText={text => setLandmark(text)}
             value = {landmark}
             placeholder = "eg. Oyibi Clinic"
             
@@ -55,7 +80,12 @@ export default function  MakeReportScreen() {
         
       />
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={()=> {
+          if(description !== null){
+            sendInfo();
+            close(false)
+          }
+           }}>
           <Text style={{color: "white"}}>Report Case</Text>
         </TouchableOpacity>
       </View>
@@ -94,12 +124,12 @@ const styles = StyleSheet.create({
       padding: 10
     },
     btn: {
-      width: 180,
+      width: 200,
       backgroundColor: "black",
       justifyContent: "center", 
       alignItems: "center",
       marginTop: 100,
-      height: 40
+      height: 50
     }
   	
 })

@@ -12,9 +12,10 @@ import MakeReport from '../screens/makeReportScreen';
 import Notification from '../screens/Notification';
 import logVitals from '../screens/logVitals';
 
+export const UserContext = React.createContext();
+
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
-
 
 const HomeStack = createStackNavigator();
 const ReportStack = createStackNavigator();
@@ -22,11 +23,13 @@ const VitalsStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
 export default function BottomTabNavigator({ navigation, route }) {
-  // Set the header title on the parent stack navigator depending on the
-  // currently active tab. Learn more in the documentation:
-  // https://reactnavigation.org/docs/en/screen-options-resolution.html
+  const {Item1} = route.params;
+  console.log(Item1)
 
+  const [id, setId] = React.useState(Item1)
+  
   return (
+    
     <BottomTab.Navigator >
       <BottomTab.Screen
         name="Home"
@@ -49,6 +52,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         </HomeStack.Navigator>
         )
       }
+
       </BottomTab.Screen>
 
       <BottomTab.Screen
@@ -62,13 +66,16 @@ export default function BottomTabNavigator({ navigation, route }) {
           inactiveTintColor: '#ccc',
           keyboardHidesTabBar: true,
         }}
+
       >{() => (
-        <ReportStack.Navigator>
-          <ReportStack.Screen name="Report" component={Report} options={{ headerShown: false }} />
-          <ReportStack.Screen name="Profile" component={Profile} />
-          <ReportStack.Screen name="MakeReport" component={MakeReport} />
-          <ReportStack.Screen name="Notification" component={Notification} />
-        </ReportStack.Navigator>
+        <UserContext.Provider value={Item1}>
+          <ReportStack.Navigator >
+            <ReportStack.Screen name="Report" component={Report} options={{ headerShown: false }}/>
+            <ReportStack.Screen name="Profile" component={Profile} />
+            <ReportStack.Screen name="Notification" component={Notification} />
+          </ReportStack.Navigator>
+        </UserContext.Provider>
+
       )
     }
       </BottomTab.Screen>
@@ -116,5 +123,5 @@ export default function BottomTabNavigator({ navigation, route }) {
     }
       </BottomTab.Screen>
     </BottomTab.Navigator>
-  );
+    );
 }

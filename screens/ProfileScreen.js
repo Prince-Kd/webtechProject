@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
 import Countries from './CountryPicker';
 
-export default function  ProfileScreen() {
-	const [age, setAge] = useState("");
+
+export default function  ProfileScreen({navigation}) {
+	const [age, setAge] = useState()
 	const [license, setLicense] = useState("");
 	const [checked, setState] = useState();
 	const [country1, setCountry1 ] = useState();
@@ -15,8 +16,7 @@ export default function  ProfileScreen() {
 		setCountry1(value1);
 		setCountry2(value2);
 	}
-
-  return (
+ return (
   	
 	<View style={styles.root}>
 	<ScrollView>
@@ -63,7 +63,11 @@ export default function  ProfileScreen() {
 		style={styles.input}
 		/>
 
-		<TouchableOpacity style={{backgroundColor: "black", height: 50, marginVertical: 20, justifyContent: "center", alignItems: "center"}}>
+		<TouchableOpacity style={{backgroundColor: "black", height: 50, marginVertical: 20, justifyContent: "center", alignItems: "center"}}
+		onPress={()=>{
+			navigation.goBack();
+			alert("Updated Successfully")
+		}}>
 			<Text style={{color: "white"}}>Update Profile</Text>
 		</TouchableOpacity>
 	</ScrollView>

@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, StatusBar} from 'react-native';
 
-export default function Information({navigation}) {
+export default function Information({navigation, route}) {
+  const{item1} = route.params;
+  console.log(item1);
+  
 	return(
 		<View style={{flex:1}}>
 			<View style={styles.header}>
@@ -9,7 +12,9 @@ export default function Information({navigation}) {
 		    </View>
 		    <ScrollView>
 		    	<View style={{paddingHorizontal: 15, flex:1}} >
-			    	<TouchableOpacity onPress={() => navigation.navigate("Root") } style={styles.start} >
+			    	<TouchableOpacity onPress={() => {
+              navigation.navigate("Root",{Item1: item1})
+            } } style={styles.start} >
 			    		<Text style={{color: "white"}} >Lets get started...</Text>
 			    	</TouchableOpacity>
 		    	</View>
